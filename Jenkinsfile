@@ -1,21 +1,8 @@
 pipeline {
     agent any
-    /*
-    // Si tu veux utiliser un agent spécifique :
-    agent {
-        node {
-            label 'build'
-        }
-    }
-    */
 
     tools {
         maven 'M2_HOME'
-    }
-
-    options {
-        // Timeout counter starts after agent is allocated
-        timeout(time: 1, unit: 'SECONDS')
     }
 
     environment {
@@ -34,7 +21,10 @@ pipeline {
 
         stage('Code Build') {
             steps {
-                sh 'mvn install -Dmaven.test.skip=true'
+                // Si le pom.xml est dans un sous-dossier, mettre le nom du dossier
+                // dir('atelier-jenkins') {
+                    sh 'mvn clean compile'
+                // }
             }
         }
 
