@@ -1,44 +1,27 @@
 pipeline {
     agent any
 
-    tools {
-        maven 'M2_HOME'
-    }
-
-    environment {
-        APP_ENV = "DEV"
+    triggers {
+        githubPush()
     }
 
     stages {
-
-        stage('Code Checkout') {
+        stage('Build') {
             steps {
-                git branch: 'master',
-                    url: 'https://github.com/Mayarahachani/mayara_hachani-TWIN8.git',
-                    credentialsId: 'jenkins-example-github-pat'
+                echo "Building the project..."
             }
         }
 
-        stage('Code Build') {
+        stage('Tests') {
             steps {
-                // Si le pom.xml est dans un sous-dossier, mettre le nom du dossier
-                // dir('atelier-jenkins') {
-                    sh 'mvn clean compile'
-                // }
+                echo "Running tests..."
             }
         }
 
-    }
-
-    post {
-        always {
-            echo "======always======"
-        }
-        success {
-            echo "=====pipeline executed successfully ====="
-        }
-        failure {
-            echo "======pipeline execution failed======"
+        stage('Deploy') {
+            steps {
+                echo "Deploying application..."
+            }
         }
     }
 }
